@@ -1,0 +1,173 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">Panel de Administración</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Gestión de Productos</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre del Producto</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.name" placeholder="Nombre del producto">
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" [(ngModel)]="newProduct.description" placeholder="Descripción del producto"></textarea>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Precio</label>
+                <input type="number" class="form-control" [(ngModel)]="newProduct.price" step="0.01" placeholder="0.00">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newProduct.stock" placeholder="0">
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Categoría</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.category" placeholder="Categoría">
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">URL de Imagen</label>
+            <input type="text" class="form-control" [(ngModel)]="newProduct.imageUrl" placeholder="https://...">
+          </div>
+          
+          <button class="btn btn-primary" (click)="addProduct()" [disabled]="!isValidProduct()">
+            Agregar Producto
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Gestión de Usuarios</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre de Usuario</label>
+            <input type="text" class="form-control" [(ngModel)]="newUser.username" placeholder="username">
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="newUser.email" placeholder="email@example.com">
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Rol</label>
+            <select class="form-select" [(ngModel)]="newUser.role">
+              <option [value]="UserRole.CUSTOMER">Cliente</option>
+              <option [value]="UserRole.ADMIN">Administrador</option>
+            </select>
+          </div>
+          
+          <button class="btn btn-success" (click)="addUser()" [disabled]="!isValidUser()">
+            Agregar Usuario
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Inventario de Productos</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of products">
+                  <td>{{ product.id }}</td>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.category }}</td>
+                  <td>€{{ product.price.toFixed(2) }}</td>
+                  <td>
+                    <span [class]="product.stock < 5 ? 'badge bg-danger' : 'badge bg-success'">
+                      {{ product.stock }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-warning btn-sm me-1" (click)="editProduct(product)">
+                      ✏️
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)">
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Estadísticas del Sistema</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="text-center">
+                <h3 class="text-primary">{{ products.length }}</h3>
+                <p class="text-muted">Total Productos</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="text-center">
+                <h3 class="text-success">{{ getTotalStock() }}</h3>
+                <p class="text-muted">Total Stock</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="text-center">
+                <h3 class="text-info">{{ getTotalValue() | currency:'EUR' }}</h3>
+                <p class="text-muted">Valor Total</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="text-center">
+                <h3 class="text-warning">{{ getLowStockCount() }}</h3>
+                <p class="text-muted">Stock Bajo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

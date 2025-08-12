@@ -1,0 +1,40 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1 class="display-4 mb-4">🏪 Bienvenido a Nuestra Tienda Online</h1>
+      <p class="lead mb-5">Descubre nuestra amplia selección de productos de tecnología y accesorios</p>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-4 text-center">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <h3 class="text-primary mb-3">🛍️ Productos</h3>
+          <p class="text-muted">Explora nuestro catálogo de productos con precios competitivos y stock disponible</p>
+          <a [routerLink]="['/products']" class="btn btn-primary">Ver Productos</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 text-center">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <h3 class="text-success mb-3">🛒 Carrito</h3>
+          <p class="text-muted">Gestiona tu carrito de compras y genera facturas con cálculo automático de IVA</p>
+          <a [routerLink]="['/cart']" class="btn btn-success">Ver Carrito</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 text-center">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <h3 class="text-success mb-3">🔒 Seguridad</h3>
+          <p class="text-muted">Sistema de autenticación con diferentes niveles de acceso y roles de usuario</p>
+          <a [routerLink]="['/login']" class="btn btn-info">Iniciar Sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Iniciar Sesión</h3>
+          
+          <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Usuario</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username"
+                name="username"
+                [(ngModel)]="username"
+                required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password"
+                name="password"
+                [(ngModel)]="password"
+                required>
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">
+                Ingresar
+              </button>
+            </div>
+            
+            <div class="d-grid mt-2">
+              <button type="button" class="btn btn-outline-secondary" (click)="showRegisterForm = true">
+                Registrarse
+              </button>
+            </div>
+          </form>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            {{ errorMessage }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Registro -->
+  <div class="row justify-content-center mt-4" *ngIf="showRegisterForm">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h4 class="card-title text-center mb-4">Registrarse</h4>
+          
+          <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+            <div class="mb-3">
+              <label for="registerUsername" class="form-label">Usuario</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="registerUsername"
+                name="registerUsername"
+                [(ngModel)]="registerUsername"
+                required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="registerEmail" class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="registerEmail"
+                name="registerEmail"
+                [(ngModel)]="registerEmail"
+                required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="registerRole" class="form-label">Rol</label>
+              <select 
+                class="form-select" 
+                id="registerRole"
+                name="registerRole"
+                [(ngModel)]="registerRole"
+                required>
+                <option value="customer">Usuario</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success" [disabled]="!registerForm.valid">
+                Registrarse
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="showRegisterForm = false">
+                Cancelar
+              </button>
+            </div>
+          </form>
+          
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

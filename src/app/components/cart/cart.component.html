@@ -1,0 +1,157 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="mb-0">Carrito de Compras</h3>
+        </div>
+        <div class="card-body">
+          <div *ngIf="cartItems.length === 0" class="text-center py-5">
+            <h4 class="text-muted">Tu carrito está vacío</h4>
+            <p class="text-muted">Agrega algunos productos para comenzar</p>
+            <button class="btn btn-primary" routerLink="/products">Ver Productos</button>
+          </div>
+
+          <div *ngFor="let item of cartItems" class="cart-item p-3 mb-3 border rounded">
+            <div class="row align-items-center">
+              <div class="col-md-2">
+                <img [src]="item.product.imageUrl" class="img-fluid rounded" [alt]="item.product.name">
+              </div>
+              <div class="col-md-4">
+                <h6 class="mb-1">{{ item.product.name }}</h6>
+                <small class="text-muted">{{ item.product.description }}</small>
+              </div>
+              <div class="col-md-2">
+                <span class="text-primary fw-bold">€{{ item.product.price.toFixed(2) }}</span>
+              </div>
+              <div class="col-md-2">
+                <input 
+                  type="number" 
+                  class="form-control form-control-sm" 
+                  min="1" 
+                  [max]="item.product.stock + item.quantity"
+                  [(ngModel)]="item.quantity"
+                  (change)="updateQuantity(item.product.id, item.quantity)">
+              </div>
+              <div class="col-md-1">
+                <span class="fw-bold">€{{ item.subtotal.toFixed(2) }}</span>
+              </div>
+              <div class="col-md-1">
+                <button 
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="removeFromCart(item.product.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card invoice-section">
+        <div class="card-header">
+          <h4 class="mb-0">Resumen de Compra</h4>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal:</span>
+            <span>€{{ subtotal.toFixed(2) }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>IVA (21%):</span>
+            <span>€{{ tax.toFixed(2) }}</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-3">
+            <strong>Total:</strong>
+            <strong class="text-primary">€{{ total.toFixed(2) }}</strong>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <button 
+              class="btn btn-success"
+              (click)="generateInvoice()"
+              [disabled]="cartItems.length === 0">
+              Generar Factura
+            </button>
+            <button 
+              class="btn btn-outline-secondary"
+              (click)="clearCart()"
+              [disabled]="cartItems.length === 0">
+              Vaciar Carrito
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Factura -->
+  <div class="modal fade" id="invoiceModal" tabindex="-1" [class.show]="showInvoiceModal" [style.display]="showInvoiceModal ? 'block' : 'none'">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Factura de Compra</h5>
+          <button type="button" class="btn-close" (click)="closeInvoiceModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="currentInvoice">
+            <div class="row mb-3">
+              <div class="col-6">
+                <strong>Fecha:</strong> {{ currentInvoice.date | date:'dd/MM/yyyy HH:mm' }}
+              </div>
+              <div class="col-6 text-end">
+                <strong>Factura #:</strong> {{ generateInvoiceNumber() }}
+              </div>
+            </div>
+            
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of currentInvoice.items">
+                  <td>{{ item.product.name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>€{{ item.product.price.toFixed(2) }}</td>
+                  <td>€{{ item.subtotal.toFixed(2) }}</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <div class="row">
+              <div class="col-6 offset-6">
+                <div class="d-flex justify-content-between mb-2">
+                  <span>Subtotal:</span>
+                  <span>€{{ currentInvoice.subtotal.toFixed(2) }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span>IVA (21%):</span>
+                  <span>€{{ currentInvoice.tax.toFixed(2) }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <strong>Total:</strong>
+                  <strong class="text-primary">€{{ currentInvoice.total.toFixed(2) }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeInvoiceModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Backdrop -->
+  <div class="modal-backdrop fade show" *ngIf="showInvoiceModal"></div>
+</div>
